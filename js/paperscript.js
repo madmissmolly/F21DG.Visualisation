@@ -32,6 +32,15 @@ var mm = (canvas.height/2)/1000;
 var maxW = 3000;
 var maxH = 2000;
 
+// class Bike {
+//     constructor(wheelbase) {
+//         this.wheelbase = wheelbase
+//         console.log(wheelbase);
+         
+//     }
+// }
+
+
 // Helpers
 function newPath(start) {
     var path = new Path();
@@ -79,9 +88,9 @@ function drawChainstay() {
 function drawStack() {
     var start =  new Point(1250*mm, 1250*mm);//bikeStart;
 
-    // var path = newPath(start);
-    // path.dashArray = [10, 4];
-    // path.lineTo(start + [0, -stack*mm]);
+    var path = newPath(start);
+    path.dashArray = [10, 4];
+    path.lineTo(start + [0, -stack*mm]);
 
     reachStart =  new Point(start + [0, -stack*mm])
 }
@@ -90,9 +99,9 @@ function drawStack() {
 function drawReach() {
     var start =  new Point(reachStart.x, reachStart.y);//bikeStart;
 
-    // var path = newPath(start);
-    // path.dashArray = [10, 4];
-    // path.lineTo(start + [reach*mm, 0]);
+    var path = newPath(start);
+    path.dashArray = [10, 4];
+    path.lineTo(start + [reach*mm, 0]);
 
     endReach = new Point(start + [reach*mm, 0])
 }
@@ -115,9 +124,9 @@ function drawHeadstay() {
 function drawToptube() {
     var start = new Point(endReach.x, endReach.y);
 
-    // var path = newPath(start);
-    // path.dashArray = [10, 4];
-    // path.lineTo(start - [effTopTube*mm, 0]);
+    var path = newPath(start);
+    path.dashArray = [10, 4];
+    path.lineTo(start - [effTopTube*mm, 0]);
 
     endTopTube = new Point(start - [effTopTube*mm, 0])
 }
@@ -159,6 +168,13 @@ console.log (frontHyp - headTube)
 // console.log (ht_y)
 // console.log (headTube)
 // console.log (headAngle)
+var deets = {}
+
+deets["wheelbase"] = wheelbase
+
+bik = new Bike (deets)
+bik.myfun()
+
 
 drawWheelbase();
 drawBBDrop();
@@ -170,3 +186,6 @@ drawHeadstay();
 drawToptube();
 drawSeattube();
 drawWheels();
+
+lin = new Rule(reachStart, endReach)
+console.log(lin.getStart().x);
