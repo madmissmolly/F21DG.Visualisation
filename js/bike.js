@@ -12,8 +12,14 @@ class Bike {
         
     }
 }
+window.globals = {}
 
-
+function toggle() {
+    window.globals.tog();
+    // paper.showDetails = !paper.showDetails
+    console.log("show show");
+    
+}
 
 // class Rule {
 //     constructor(start,end) {

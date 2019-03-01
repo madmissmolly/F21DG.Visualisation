@@ -56,14 +56,19 @@ function newPath(start) {
 function drawWheelbase() {
     var start = new Point(1250*mm - wbStart*mm, 1250*mm +bikeBBDrop*mm);
 
-    // var path = newPath(start);
+        var path = newPath(start);
 
-    // path.dashArray = [10, 4];
-    // // console.log(wheelbase*mm)
-    // // console.log(canvas.width)
-    // path.lineTo([start.x + wheelbase*mm, 1250*mm+bikeBBDrop*mm]);
+        path.dashArray = [10, 4];
+        // console.log(wheelbase*mm)
+        // console.log(canvas.width)
+        path.lineTo([start.x + wheelbase*mm, 1250*mm+bikeBBDrop*mm]);
+    if(!showDetails){
+        path.visible = false
+    }
+
     wbLeft = new Point (1250*mm - wbStart*mm, 1250*mm +bikeBBDrop*mm)
     wbRight = new Point (start.x + wheelbase*mm, 1250*mm+bikeBBDrop*mm)
+    return path
 }
 
 function drawBBDrop() {
@@ -150,7 +155,16 @@ function drawWheels() {
     wheelFront.strokeColor = 'grey';
 }
 
-
+function tog(){
+    scope.activate()
+    showDetails = !showDetails
+    if(!showDetails)
+        wbPath.visible = false
+    else
+        wbPath.visible = true
+    // console.log("heloo paper");
+    
+}
 
 // Main
 var wbStart = Math.sqrt(chainstay*chainstay - bikeBBDrop*bikeBBDrop)
@@ -162,6 +176,9 @@ var frontHyp2 = Math.sqrt(frontX*frontX + frontY*frontY)
 var ht_y = headTube * Math.sin(headAngle)
 var ht_x = headTube * Math.cos(headAngle)
 var wheelSize = (frontHyp - headTube)*0.75
+var showDetails = false
+var scope = this;
+globals.tog = tog
 console.log ("hypo")
 console.log (frontHyp - headTube)
 // console.log (ht_x)
@@ -176,7 +193,7 @@ bik = new Bike (deets)
 bik.myfun()
 
 
-drawWheelbase();
+var wbPath = drawWheelbase();
 drawBBDrop();
 drawChainstay();
 drawStack();
