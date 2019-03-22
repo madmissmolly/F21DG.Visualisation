@@ -2,8 +2,8 @@
 
 **Instructions**
 
-Host locally and it should run itself.
+Run `npm install` to get the dependencies.
 
-Currently we are using CDNs so npm install is not required at this point.
+Host locally use `/index.html`.
 
-The main file for visualisation is `paperscript.js`.
+The main file for visualisation is `bicycle-vis.js`.
