@@ -1,6 +1,3 @@
-// Get Canvas
-var canvas = document.getElementById('bicycle');
-
 //make line class
 // Dimension variables
 var wheelbase = 1043;
@@ -22,12 +19,10 @@ var endTopTube = new Point(0,0);
 var wbLeft = new Point(0,0);
 var wbRight = new Point(0,0);
 
-var bikeStart = new Point(1250*mm,1250*mm)
+var mm = (view.size.height/2)/1000;
 
-var width = 1;
-var height = canvas.height/canvas.width;
+var bikeStart = new Point(1250*mm,1250*mm);
 
-var mm = (canvas.height/2)/1000;
 
 var maxW = 3000;
 var maxH = 2000;
@@ -36,7 +31,7 @@ var maxH = 2000;
 //     constructor(wheelbase) {
 //         this.wheelbase = wheelbase
 //         console.log(wheelbase);
-         
+
 //     }
 // }
 
@@ -59,8 +54,7 @@ function drawWheelbase() {
         var path = newPath(start);
 
         path.dashArray = [10, 4];
-        // console.log(wheelbase*mm)
-        // console.log(canvas.width)
+
         path.lineTo([start.x + wheelbase*mm, 1250*mm+bikeBBDrop*mm]);
     if(!showDetails){
         path.visible = false
@@ -168,16 +162,15 @@ function tog(){
 
 // Main
 function drawBike () {
-
-	var wbStart = Math.sqrt(chainstay*chainstay - bikeBBDrop*bikeBBDrop)
-	bb_h_to_front = wheelbase - wbStart
-	var frontX = bb_h_to_front - reach
-	var frontY = stack + bikeBBDrop
-	var frontHyp = frontY / Math.sin(headAngle)
-	var frontHyp2 = Math.sqrt(frontX*frontX + frontY*frontY)
-	var ht_y = headTube * Math.sin(headAngle)
-	var ht_x = headTube * Math.cos(headAngle)
-	var wheelSize = (frontHyp - headTube)*0.75
+	var wbStart = Math.sqrt(chainstay*chainstay - bikeBBDrop*bikeBBDrop);
+	bb_h_to_front = wheelbase - wbStart;
+	var frontX = bb_h_to_front - reach;
+	var frontY = stack + bikeBBDrop;
+	var frontHyp = frontY / Math.sin(headAngle);
+	var frontHyp2 = Math.sqrt(frontX*frontX + frontY*frontY);
+	var ht_y = headTube * Math.sin(headAngle);
+	var ht_x = headTube * Math.cos(headAngle);
+	var wheelSize = (frontHyp - headTube)*0.75;
 	
 	var wbPath = drawWheelbase();
 	bGraph = new BikeGraphic()
@@ -195,21 +188,13 @@ drawWheels();
 var showDetails = false
 var scope = this;
 globals.tog = tog
-console.log ("hypo")
-console.log (frontHyp - headTube)
-// console.log (ht_x)
-// console.log (ht_y)
-// console.log (headTube)
-// console.log (headAngle)
-var deets = {}
 
-deets["wheelbase"] = wheelbase
+var details = {};
 
-bik = new Bike (deets)
-bik.myfun()
+details["wheelbase"] = wheelbase
 
-
-
+bik = new Bike (details)
+bik.myfun();
 
 lin = new Rule(reachStart, endReach)
 console.log(lin.getStart().x);

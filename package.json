@@ -1,19 +1,19 @@
 {
-  "name": "geometry-geeks-vis",
-  "version": "1.0.0",
-  "description": "Visualisation of bicycles using data from geometrygeeks.bike",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/madmissmolly/F21DG.Visualisation.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/madmissmolly/F21DG.Visualisation/issues"
-  },
-  "homepage": "https://github.com/madmissmolly/F21DG.Visualisation#readme",
-  "dependencies": {
-    "paper": "^0.12.0"
-  }
+    "name": "geometry-geeks-vis",
+    "version": "1.0.0",
+    "description": "Visualisation of bicycles using data from geometrygeeks.bike",
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/madmissmolly/F21DG.Visualisation.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/madmissmolly/F21DG.Visualisation/issues"
+    },
+    "homepage": "https://github.com/madmissmolly/F21DG.Visualisation#readme",
+    "dependencies": {
+        "paper": "^0.12.0"
+    }
 }
