@@ -1,25 +1,34 @@
 var colours = {
-    guideline: '#67b4be',
-    component: '#36b935'
+    gridline: '#a0d3ff',
+    guideline: '#be639c',
+    component: '#00BE5B'
 };
 
 var bicycle = {
-    wheelbase: 995,
+    wheelBase: 995,
     bbdrop: 70,
     chainstay: 410,
     stack: 543,
-    wheelRadius: 340
-};
-
-var bicycle2 = {
-    wheelbase: 500,
-    bbdrop: 20,
-    chainstay: 250,
-    stack: 120,
-    wheelRadius: 340
+    reach: 390,
+    forkRake: 45,
+    headAngle: 74,
+    headTube: 140,
+    seatTubeCT: 520,
+    seatAngle: 74,
+    wheelRadius: 340,
 };
 
 var allBikes = new Group();
+
+function drawGridLines() {
+    // Draw vertical centre line on the view
+    var pathVerticalCentreLine = new Path.Line(view.bounds.topCenter, view.bounds.bottomCenter);
+    pathVerticalCentreLine.strokeColor = colours.gridline;
+
+    // Draw horizontal centre line on the view
+    var pathHorizontalCentreLine = new Path.Line(view.bounds.leftCenter, view.bounds.rightCenter);
+    pathHorizontalCentreLine.strokeColor = colours.gridline;
+}
 
 function makeBike(b) {
     // Create group for each component of the bike drawing
@@ -41,12 +50,12 @@ function findBikeCoords(b) {
     // Create path to search for certain points
     var path = new Path();
 
-    // Find rear wheel centre using wheelbase and the view centre point
-    path.moveTo(view.center + new Point(-b.wheelbase / 2, 0));
+    // Find rear wheel centre using wheelBase and the view centre point
+    path.moveTo(view.center + new Point(-b.wheelBase / 2, 0));
     b.rearWheel = path.position;
 
-    // Find front wheel centre using wheelbase and the view centre point
-    path.moveTo(view.center + new Point(b.wheelbase / 2, 0));
+    // Find front wheel centre using wheelBase and the view centre point
+    path.moveTo(view.center + new Point(b.wheelBase / 2, 0));
     b.frontWheel = path.position;
 
     // Use Pythagoras' Theorem to find X coordinate of bottomBracket
@@ -54,18 +63,45 @@ function findBikeCoords(b) {
     path.moveTo(path.position + new Point(0, b.bbdrop));
 
     b.bottomBracket = path.position;
+
+    // Calculate length of steering axis
+    b.lengthOfSteeringAxis = (b.stack - b.bbdrop) / Math.sin(b.headAngle * (180 / Math.PI));
+
+    //Find X offset of bottom of steering axis from front wheel
+    path.moveTo(b.frontWheel - new Point(b.forkRake, 0));
+    b.steeringAxisBottom = path.position;
+
+    // Use Pythagoras' Theorem to find X offset of top of steering axis from front wheel 
+    path.moveTo(b.frontWheel - new Point(b.forkRake + Math.sqrt(Math.pow(b.lengthOfSteeringAxis, 2) - Math.pow((b.stack - b.bbdrop), 2)), 0));
+    b.steeringAxisTopOffset = path.position;
+
+    // Find coordinate for top of steering axis / head tube 
+    path.moveTo(b.steeringAxisTopOffset - new Point(0, (b.stack - b.bbdrop)));
+    b.steeringAxisTop = path.position;
+
+    // Find coordinate for bottom of head tube
+    //y offset from top of head tube sin * hyp
+    headTubeYOffset = (Math.sin(b.headAngle * (180 / Math.PI)) * b.headTube);
+    path.moveTo(b.steeringAxisTop - new Point(0, headTubeYOffset));
+    //x offset from top of head tube
+    path.moveTo(path.position + new Point(Math.sqrt((Math.pow(b.headTube, 2) - Math.pow(headTubeYOffset, 2))), 0));
+    b.headTubeBottom = path.position;
+
+    // Find coordinates for top of seat tube
+    // y offset from bottom bracket sin * hyp
+    seatTubeYOffset = (Math.sin(b.seatAngle * (180 / Math.PI)) * b.seatTubeCT);
+    path.moveTo(b.bottomBracket + new Point(0, seatTubeYOffset));
+
+    //x offset from top of bottom bracket tube
+    path.moveTo(path.position - new Point(Math.sqrt((Math.pow(b.seatTubeCT, 2) - Math.pow(seatTubeYOffset, 2))), 0));
+    b.seatTubeTop = path.position;
 }
 
 function drawGuidelines(b) {
-    // Draw centre point of the view
-    var shapeViewCentre = new Shape.Circle(view.center, 10);
-    shapeViewCentre.strokeColor = colours.guideline;
-    b.bikeGroup.addChild(shapeViewCentre);
-
-    // Draw wheelbase guideline
-    var pathWheelbase = new Path.Line(b.rearWheel, b.frontWheel);
-    pathWheelbase.strokeColor = colours.guideline;
-    b.bikeGroup.addChild(pathWheelbase);
+    // Draw wheelBase guideline
+    var pathwheelBase = new Path.Line(b.rearWheel, b.frontWheel);
+    pathwheelBase.strokeColor = colours.guideline;
+    b.bikeGroup.addChild(pathwheelBase);
 
     // Draw bbdrop guideline
     var pathBBDrop = new Path();
@@ -80,8 +116,14 @@ function drawGuidelines(b) {
     pathStack.add(pathStack.position + new Point(0, -b.stack));
     pathStack.strokeColor = colours.guideline;
     b.bikeGroup.addChild(pathStack);
+
+    // Draw steering axis
+    var pathSteeringAxis = new Path.Line(b.steeringAxisBottom, b.steeringAxisTop);
+    pathSteeringAxis.strokeColor = colours.guideline;
+    b.bikeGroup.addChild(pathSteeringAxis);
 }
 
+// Drawing the bike parts. No calculations should occur in this function
 function drawBike(b) {
     // Draw bottom bracket
     var shapeBottomBracket = new Shape.Circle(b.bottomBracket, 5);
@@ -92,14 +134,57 @@ function drawBike(b) {
     var pathChainstay = new Path.Line(b.bottomBracket, b.rearWheel);
     pathChainstay.strokeColor = colours.component;
     b.bikeGroup.addChild(pathChainstay);
+
+    // Draw Head Tube
+    var pathHeadTube = new Path.Line(b.steeringAxisTop, b.headTubeBottom);
+    pathHeadTube.strokeColor = colours.component;
+    b.bikeGroup.addChild(pathHeadTube);
+
+    // Draw Seat Tube
+    var pathSeatTube = new Path.Line(b.bottomBracket, b.seatTubeTop);
+    pathSeatTube.strokeColor = colours.component;
+    b.bikeGroup.addChild(pathSeatTube);
+
+    // Draw Fork
+    var pathFork = new Path.Line(b.headTubeBottom, b.frontWheel);
+    pathFork.strokeColor = colours.component;
+    b.bikeGroup.addChild(pathFork);
+
+    //Draw Top Tube
+    var pathTopTube = new Path.Line(b.seatTubeTop, b.steeringAxisTop);
+    pathTopTube.strokeColor = colours.component;
+    b.bikeGroup.addChild(pathTopTube);
+
+    // Draw Down Tube. As this is estimated we move 80% up the head tube.
+    var pathDownTube = new Path.Line(b.bottomBracket, (pathHeadTube.getPointAt(pathHeadTube.length * 0.8)));
+    pathDownTube.strokeColor = colours.component;
+    b.bikeGroup.addChild(pathDownTube);
+
+    // Draw Seat Stay
+    var pathSeatStay = new Path.Line(b.rearWheel, b.seatTubeTop);
+    pathSeatStay.strokeColor = colours.component;
+    b.bikeGroup.addChild(pathSeatStay);
+
+    // Draw rear wheel
+    var shapeRearWheel = new Shape.Circle(b.rearWheel, b.wheelRadius);
+    shapeRearWheel.strokeColor = colours.component;
+    b.bikeGroup.addChild(shapeRearWheel);
+
+    // Draw front wheel
+    var shapeFrontWheel = new Shape.Circle(b.frontWheel, b.wheelRadius);
+    shapeFrontWheel.strokeColor = colours.component;
+    b.bikeGroup.addChild(shapeFrontWheel);
 }
 
 function main() {
+    drawGridLines();
+
     makeBike(bicycle);
 
     // Resize the bikes to fit within the view
     allBikes.fitBounds(view.bounds);
     allBikes.scale(0.8);
+    allBikes.bringToFront();
 }
 
 main();
