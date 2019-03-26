@@ -1,13 +1,19 @@
-<<<<<<< Updated upstream
-=======
+
 var colours = {
     gridline: '#f9f1e0',
     guideline: '#be639c',
     component: '#00BE5B'
 };
 
+var multiple = {
+    gridline: '#f9f1e0',
+    guideline: '#646464',
+    hovered: '#0093be',
+    component: ['aqua', 'red','lime', 'fuschia', 'yellow', 'maroon', 'teal','blue', 'green']
+};
+
 var loaded = false;
-var testing = false;
+var state = "";
 var test_bicycle = {};
 
 var bicycle = {
@@ -24,7 +30,6 @@ var bicycle = {
     wheel_size: 340
 };
 
->>>>>>> Stashed changes
 var allBikes = new Group();
 
 function drawGridLines() {
@@ -46,6 +51,9 @@ function drawGridLines() {
 function makeBike(b) {
     // Check we have the parameters available to draw the bike
     if (isDrawable(b)) {
+
+        // console.log("Can draw ",b);
+    
         // Create group for each component of the bike drawing
         b.bike_group = new Group();
 
@@ -59,6 +67,8 @@ function makeBike(b) {
 
         // Add bike group to the collection of bikes
         allBikes.addChild(b.bike_group);
+    } else {
+        console.log("Could not draw bike ", b);
     }
 }
 
@@ -162,6 +172,7 @@ function drawBike(b) {
     bike_parts.children.forEach(function (part) {
         part.set({
             strokeCap: 'round',
+            opacity: 0.3,
             strokeWidth: 7,
             strokeColor: colours.component,
             onMouseEnter: function () {
@@ -229,15 +240,12 @@ function onFrame(event) {
     project.activeLayer.removeChildren()
     drawGridLines();
 
-    
     allBikes = new Group();
     if(loaded){
-
-        makeBike(test_bicycle[0]);
-        makeBike(test_bicycle[1]);
-        makeBike(test_bicycle[2]);
-        makeBike(test_bicycle[3]);
-        if(testing){
+        for (bike in test_bicycle){
+            makeBike(test_bicycle[bike]);
+        }
+        if(state == "testing"){
             for (bikeKey in allBikes.children){
                 bike = allBikes.children[bikeKey];
                 var new_pos = view.center
@@ -254,6 +262,23 @@ function onFrame(event) {
                     new_pos = new_pos + new Point(1000,1000)
                 }
                 bike.position = new_pos
+                // console.log("bike children", bike.children);
+                
+                bike.children.forEach(function (part) {
+                    strokeColor: multiple.component[bikeKey]
+                    console.log(multiple.component[bikeKey]);
+                    
+                });
+            }
+        } else {
+            for (bikeKey in allBikes.children){
+                bike = allBikes.children[bikeKey];
+                
+                bike.children.forEach(function (part) {
+                    part.set({
+                    strokeColor: multiple.component[bikeKey]
+                    })
+                });
 
             }
         }
