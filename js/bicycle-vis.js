@@ -80,7 +80,7 @@ function drawGuidelines(b) {
     b.bike_group.addChild(bike_guidelines);
 }
 
-// Drawing the bike parts once points have been calculated
+// Draw the bike parts once points have been calculated
 function drawBike(b) {
     // For bike parts that we know the properties of
     var bike_parts = new Group();
@@ -136,9 +136,11 @@ function drawBike(b) {
             strokeColor: colours.component,
             onMouseEnter: function () {
                 this.strokeColor = colours.hovered;
+                this.bringToFront();
             },
             onMouseLeave: function () {
                 this.strokeColor = colours.component;
+                this.bringToFront();
             }
         });
     });

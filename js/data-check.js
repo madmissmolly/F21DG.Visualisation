@@ -1,8 +1,5 @@
 //Function that determines whether we can draw a bike or not
 function isDrawable(b) {
-
-    console.log("isBike ", b)
-
     //Checks if nessecary parameters are present, calculates them if not, returns false if this is not possible
     if (b.chainstay == null) {
         //Chainstay cannot be calculated from other parameters
