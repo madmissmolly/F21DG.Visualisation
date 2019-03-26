@@ -1,3 +1,30 @@
+<<<<<<< Updated upstream
+=======
+var colours = {
+    gridline: '#f9f1e0',
+    guideline: '#be639c',
+    component: '#00BE5B'
+};
+
+var loaded = false;
+var testing = false;
+var test_bicycle = {};
+
+var bicycle = {
+    wheelbase: 995,
+    bb_drop: 70,
+    chainstay: 410,
+    stack: 543,
+    reach: 390,
+    fork_rake: 45,
+    head_angle: 70,
+    head_tube: 140,
+    seat_tube_length: 520,
+    seat_angle: 74,
+    wheel_size: 340
+};
+
+>>>>>>> Stashed changes
 var allBikes = new Group();
 
 function drawGridLines() {
@@ -163,15 +190,81 @@ function drawBike(b) {
 function main() {
     drawGridLines();
 
-    makeBike(bicycle);
-
     // Resize the bikes to fit within the view
     allBikes.fitBounds(view.bounds);
     allBikes.scale(0.8);
     allBikes.bringToFront();
+    readBikeData();
+    
 }
 
 main();
+
+function readBikeData(file) {
+    var xmlhttp = new XMLHttpRequest();
+    var url = "dataTest.json";
+
+    xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        var myArr = JSON.parse(this.responseText);
+        var notSort = [];
+        for (k in myArr){
+            notSort.push(myArr[k])
+        }        
+        
+        test_bicycle = notSort.sort(function(a, b) {
+            return a.stack - b.stack;
+        });
+
+
+        loaded = true;
+        }
+    };
+
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+}
+
+function onFrame(event) {
+    project.activeLayer.removeChildren()
+    drawGridLines();
+
+    
+    allBikes = new Group();
+    if(loaded){
+
+        makeBike(test_bicycle[0]);
+        makeBike(test_bicycle[1]);
+        makeBike(test_bicycle[2]);
+        makeBike(test_bicycle[3]);
+        if(testing){
+            for (bikeKey in allBikes.children){
+                bike = allBikes.children[bikeKey];
+                var new_pos = view.center
+                if (bikeKey == 0){
+                    new_pos = new_pos + new Point(-1000,-1000)
+                }
+                if (bikeKey == 1){
+                    new_pos = new_pos + new Point(1000,-1000)
+                }
+                if (bikeKey == 2){
+                    new_pos = new_pos + new Point(-1000,1000)
+                }
+                if (bikeKey == 3){
+                    new_pos = new_pos + new Point(1000,1000)
+                }
+                bike.position = new_pos
+
+            }
+        }
+        
+            // Resize the bikes to fit within the view
+        allBikes.fitBounds(view.bounds);
+        allBikes.scale(0.8);
+        allBikes.bringToFront();
+    }    
+
+}
 
 // Find rear wheel centre using wheelbase and the view centre point
 function findRearWheel(b) {
