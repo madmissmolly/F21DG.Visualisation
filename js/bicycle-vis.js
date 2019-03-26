@@ -1,23 +1,3 @@
-var colours = {
-    gridline: '#f9f1e0',
-    guideline: '#be639c',
-    component: '#00BE5B'
-};
-
-var bicycle = {
-    wheelbase: 995,
-    bb_drop: 70,
-    chainstay: 410,
-    stack: 543,
-    reach: 390,
-    fork_rake: 45,
-    head_angle: 74,
-    head_tube: 140,
-    seat_tube_length: 520,
-    seat_angle: 74,
-    wheel_size: 340,
-};
-
 var allBikes = new Group();
 
 function drawGridLines() {
@@ -87,9 +67,7 @@ function drawGuidelines(b) {
     b.bike_group.addChild(pathBBDrop);
 
     // Draw stack guideline
-    var pathStack = new Path();
-    pathStack.add(b.bottom_bracket);
-    pathStack.add(pathStack.position + new Point(0, -b.stack));
+    var pathStack = new Path.Line(b.bottom_bracket, b.bottom_bracket - new Point(0, b.stack));
     pathStack.strokeColor = colours.guideline;
     b.bike_group.addChild(pathStack);
 
@@ -105,7 +83,6 @@ function drawBike(b) {
     var shapeBottomBracket = new Shape.Circle(b.bottom_bracket, 5);
     shapeBottomBracket.strokeColor = colours.component;
     b.bike_group.addChild(shapeBottomBracket);
-
 
     // Draw chainstay
     var pathChainstay = new Path.Line(b.bottom_bracket, b.rear_wheel);
@@ -229,6 +206,7 @@ function isDrawable(b) {
 
     return true;
 }
+
 // Find rear wheel centre using wheelbase and the view centre point
 function findRearWheel(b) {
     return new Point(view.center + new Point(0 - b.wheelbase / 2, 0));
@@ -247,44 +225,37 @@ function findBottomBracket(b) {
     return point;
 }
 
-//Find bottom of steering axis by taking fork rake away from front wheel
+//Find bottom of steering axis by using fork rake to find distance from front wheel along wheelbase
 function findSteeringAxisBottom(b) {
-    return new Point(b.front_wheel - new Point(b.fork_rake, 0));
+    return new Point(b.front_wheel - new Point(b.fork_rake / Math.sin(b.head_angle), 0));
 }
 
 function findSteeringAxisTop(b) {
     // Calculate length of steering axis
-    var steering_axis_length = (b.stack - b.bb_drop) / Math.sin(b.head_angle * (180 / Math.PI));
+    var steering_axis_length = (b.stack - b.bb_drop) / Math.sin(b.head_angle * Math.PI / 180);
 
     // Use Pythagoras' Theorem to find X offset of top of steering axis from front wheel
-    var steering_axis_top_offset = new Point(b.front_wheel - new Point(b.fork_rake + Math.sqrt(Math.pow(steering_axis_length, 2) - Math.pow((b.stack - b.bb_drop), 2)), 0));
+    // var steering_axis_top_offset = new Point(b.front_wheel - new Point(b.fork_rake + Math.sqrt(Math.pow(steering_axis_length, 2) - Math.pow((b.stack - b.bb_drop), 2)), 0));
+    var steering_axis_top_offset = b.steering_axis_bottom - new Point(Math.sqrt(Math.pow(steering_axis_length, 2) - Math.pow((b.stack - b.bb_drop), 2)), 0);
 
     // Find coordinate for top of steering axis / head tube
-    var steering_axis_top = steering_axis_top_offset - new Point(0, (b.stack - b.bb_drop));
-
-    return steering_axis_top;
+    return steering_axis_top_offset - new Point(0, (b.stack - b.bb_drop));
 }
 
 function findHeadTubeBottom(b) {
     // Find coordinate for bottom of head tube y offset from top of head tube sin * hyp
-    var head_tube_y_offset = (Math.sin(b.head_angle * (180 / Math.PI)) * b.head_tube);
+    var y_offset = Math.sin(b.head_angle * Math.PI / 180) * b.head_tube;
 
-    var head_tube_bottom = b.steering_axis_top - new Point(0, head_tube_y_offset);
+    var x_offset = Math.sqrt(Math.pow(b.head_tube, 2) - Math.pow(y_offset, 2));
 
-    //x offset from top of head tube
-    head_tube_bottom += new Point(Math.sqrt((Math.pow(b.head_tube, 2) - Math.pow(head_tube_y_offset, 2))), 0);
-
-    return head_tube_bottom;
+    return b.steering_axis_top + new Point(x_offset, y_offset);
 }
 
 function findSeatTubeTop(b) {
     // Find coordinates for top of seat tube offset from bottom bracket sin * hyp
-    var seat_tube_y_offset = (Math.sin(b.seat_angle * (180 / Math.PI)) * b.seat_tube_length);
+    var y_offset = Math.sin(b.seat_angle * Math.PI / 180) * b.seat_tube_length;
 
-    var point = b.bottom_bracket + new Point(0, seat_tube_y_offset);
+    var x_offset = Math.sqrt(Math.pow(b.seat_tube_length, 2) - Math.pow(y_offset, 2));
 
-    //x offset from top of bottom bracket tube
-    point -= new Point(Math.sqrt((Math.pow(b.seat_tube_length, 2) - Math.pow(seat_tube_y_offset, 2))), 0);
-
-    return point;
+    return b.bottom_bracket - new Point(x_offset, y_offset);
 }
