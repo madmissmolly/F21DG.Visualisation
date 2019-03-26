@@ -3,18 +3,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
     <title>Geometry Geeks Visualisation</title>
+    <link rel="stylesheet" href="css/screen.css">
     <script type="text/javascript" src="./node_modules/paper/dist/paper-full.js"></script>
-    <style>
-        canvas{
-            display: block;
-            margin: 0 auto;
-            border: 1px solid lightgray;
-            max-width: 100%;
-        }
-    </style>
+<script type="text/javascript" src="js/config.js"></script>
+<script type="text/paperscript" src="js/bicycle-vis.js" canvas="canvas"></script>
 </head>
 <body>
-<script type="text/paperscript" src="js/bicycle-vis.js" canvas="canvas"></script>
-<canvas resize="true" id="canvas" height="675px" width="1200px"></canvas>
+<main>
+    <div class="main-container">
+        <div class="canvas-container">
+            <canvas id="canvas" height="450px" width="800px" resize="true"></canvas>
+        </div>
+        <div class="controls-container">
+            <label for="toggle_1">Toggle 1</label>
+            <input type="checkbox" id="toggle_1">
+        </div>
+    </div>
+</main>
 </body>
 </html>

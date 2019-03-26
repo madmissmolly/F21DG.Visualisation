@@ -1,0 +1,11 @@
+.main-container {
+    margin: 0 auto;
+    width: 800px;
+    max-width: 100%;
+}
+
+canvas {
+    display: block;
+    border: 1px solid lightgray;
+    max-width: 100%;
+}
