@@ -1,37 +1,3 @@
-
-var colours = {
-    gridline: '#f9f1e0',
-    guideline: '#be639c',
-    component: '#00BE5B'
-};
-
-var multiple = {
-    gridline: '#f9f1e0',
-    guideline: '#646464',
-    hovered: '#0093be',
-    component: ['aqua', 'red','lime', 'fuschia', 'yellow', 'maroon', 'teal','blue', 'green']
-};
-
-var loaded = false;
-var state = "";
-var test_bicycle = {};
-
-var bicycle = {
-    wheelbase: 995,
-    bb_drop: 70,
-    chainstay: 410,
-    stack: 543,
-    reach: 390,
-    fork_rake: 45,
-    head_angle: 70,
-    head_tube: 140,
-    seat_tube_length: 520,
-    seat_angle: 74,
-    wheel_size: 340
-};
-
-var allBikes = new Group();
-
 function drawGridLines() {
     for (var i = 0.1; i < 1; i += 0.1) {
         // Draw vertical line
@@ -51,9 +17,6 @@ function drawGridLines() {
 function makeBike(b) {
     // Check we have the parameters available to draw the bike
     if (isDrawable(b)) {
-
-        // console.log("Can draw ",b);
-    
         // Create group for each component of the bike drawing
         b.bike_group = new Group();
 
@@ -65,10 +28,7 @@ function makeBike(b) {
         b.bike_group.pivot = b.bottom_bracket;
         b.bike_group.position = view.center;
 
-        // Add bike group to the collection of bikes
-        allBikes.addChild(b.bike_group);
-    } else {
-        console.log("Could not draw bike ", b);
+        return b.bike_group;
     }
 }
 
@@ -172,7 +132,6 @@ function drawBike(b) {
     bike_parts.children.forEach(function (part) {
         part.set({
             strokeCap: 'round',
-            opacity: 0.3,
             strokeWidth: 7,
             strokeColor: colours.component,
             onMouseEnter: function () {
@@ -199,97 +158,24 @@ function drawBike(b) {
 }
 
 function main() {
+    // All groups of bike parts are collected in here
+    var allBikes = new Group();
+
     drawGridLines();
+
+    // Create, draw, and return bike as a group of parts
+    var bikeGroup = makeBike(bicycle1);
+
+    // Add the drawn bike's group of parts to collection of bikes
+    allBikes.addChild(bikeGroup);
 
     // Resize the bikes to fit within the view
     allBikes.fitBounds(view.bounds);
     allBikes.scale(0.8);
     allBikes.bringToFront();
-    readBikeData();
-    
 }
 
 main();
-
-function readBikeData(file) {
-    var xmlhttp = new XMLHttpRequest();
-    var url = "dataTest.json";
-
-    xmlhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        var myArr = JSON.parse(this.responseText);
-        var notSort = [];
-        for (k in myArr){
-            notSort.push(myArr[k])
-        }        
-        
-        test_bicycle = notSort.sort(function(a, b) {
-            return a.stack - b.stack;
-        });
-
-
-        loaded = true;
-        }
-    };
-
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-}
-
-function onFrame(event) {
-    project.activeLayer.removeChildren()
-    drawGridLines();
-
-    allBikes = new Group();
-    if(loaded){
-        for (bike in test_bicycle){
-            makeBike(test_bicycle[bike]);
-        }
-        if(state == "testing"){
-            for (bikeKey in allBikes.children){
-                bike = allBikes.children[bikeKey];
-                var new_pos = view.center
-                if (bikeKey == 0){
-                    new_pos = new_pos + new Point(-1000,-1000)
-                }
-                if (bikeKey == 1){
-                    new_pos = new_pos + new Point(1000,-1000)
-                }
-                if (bikeKey == 2){
-                    new_pos = new_pos + new Point(-1000,1000)
-                }
-                if (bikeKey == 3){
-                    new_pos = new_pos + new Point(1000,1000)
-                }
-                bike.position = new_pos
-                // console.log("bike children", bike.children);
-                
-                bike.children.forEach(function (part) {
-                    strokeColor: multiple.component[bikeKey]
-                    console.log(multiple.component[bikeKey]);
-                    
-                });
-            }
-        } else {
-            for (bikeKey in allBikes.children){
-                bike = allBikes.children[bikeKey];
-                
-                bike.children.forEach(function (part) {
-                    part.set({
-                    strokeColor: multiple.component[bikeKey]
-                    })
-                });
-
-            }
-        }
-        
-            // Resize the bikes to fit within the view
-        allBikes.fitBounds(view.bounds);
-        allBikes.scale(0.8);
-        allBikes.bringToFront();
-    }    
-
-}
 
 // Find rear wheel centre using wheelbase and the view centre point
 function findRearWheel(b) {
