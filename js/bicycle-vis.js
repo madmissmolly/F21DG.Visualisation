@@ -17,10 +17,8 @@ function drawGridLines() {
 }
 
 function makeBike(b) {
-
-    // Check we have the parameters availabe to draw the bike
+    // Check we have the parameters available to draw the bike
     if (isDrawable(b)) {
-
         // Create group for each component of the bike drawing
         b.bike_group = new Group();
 
@@ -54,80 +52,112 @@ function findBikeCoords(b) {
 }
 
 function drawGuidelines(b) {
+    var bike_guidelines = new Group();
+
     // Draw wheelbase guideline
     var pathWheelbase = new Path.Line(b.rear_wheel, b.front_wheel);
-    pathWheelbase.strokeColor = colours.guideline;
-    b.bike_group.addChild(pathWheelbase);
+    bike_guidelines.addChild(pathWheelbase);
 
     // Draw bbdrop guideline
     var pathBBDrop = new Path();
     pathBBDrop.add(b.bottom_bracket.x, view.center.y);
     pathBBDrop.add(pathBBDrop.position + new Point(0, b.bb_drop));
-    pathBBDrop.strokeColor = colours.guideline;
-    b.bike_group.addChild(pathBBDrop);
+    bike_guidelines.addChild(pathBBDrop);
 
     // Draw stack guideline
     var pathStack = new Path.Line(b.bottom_bracket, b.bottom_bracket - new Point(0, b.stack));
-    pathStack.strokeColor = colours.guideline;
-    b.bike_group.addChild(pathStack);
+    bike_guidelines.addChild(pathStack);
 
     // Draw steering axis
     var pathSteeringAxis = new Path.Line(b.steering_axis_bottom, b.steering_axis_top);
-    pathSteeringAxis.strokeColor = colours.guideline;
-    b.bike_group.addChild(pathSteeringAxis);
+    bike_guidelines.addChild(pathSteeringAxis);
+
+    bike_guidelines.children.forEach(function (part) {
+        part.set({
+            strokeCap: 'round',
+            strokeWidth: 1,
+            strokeColor: colours.guideline
+        });
+    });
+
+    b.bike_group.addChild(bike_guidelines);
 }
 
 // Drawing the bike parts once points have been calculated
 function drawBike(b) {
+    // For bike parts that we know the properties of
+    var bike_parts = new Group();
+
+    // For bike parts that are estimated due to lack of data
+    var bike_parts_estimated = new Group();
+
     // Draw bottom bracket
     var shapeBottomBracket = new Shape.Circle(b.bottom_bracket, 5);
-    shapeBottomBracket.strokeColor = colours.component;
-    b.bike_group.addChild(shapeBottomBracket);
+    bike_parts.addChild(shapeBottomBracket);
 
     // Draw chainstay
     var pathChainstay = new Path.Line(b.bottom_bracket, b.rear_wheel);
-    pathChainstay.strokeColor = colours.component;
-    b.bike_group.addChild(pathChainstay);
+    bike_parts.addChild(pathChainstay);
 
     // Draw Head Tube
     var pathHeadTube = new Path.Line(b.steering_axis_top, b.head_tube_bottom);
-    pathHeadTube.strokeColor = colours.component;
-    b.bike_group.addChild(pathHeadTube);
+    bike_parts.addChild(pathHeadTube);
 
     // Draw Seat Tube
     var pathSeatTube = new Path.Line(b.bottom_bracket, b.seat_tube_top);
-    pathSeatTube.strokeColor = colours.component;
-    b.bike_group.addChild(pathSeatTube);
+    bike_parts.addChild(pathSeatTube);
 
     // Draw Fork
     var pathFork = new Path.Line(b.head_tube_bottom, b.front_wheel);
-    pathFork.strokeColor = colours.component;
-    b.bike_group.addChild(pathFork);
+    bike_parts.addChild(pathFork);
 
     //Draw Top Tube
     var pathTopTube = new Path.Line(b.seat_tube_top, b.steering_axis_top);
-    pathTopTube.strokeColor = colours.component;
-    b.bike_group.addChild(pathTopTube);
+    bike_parts.addChild(pathTopTube);
 
     // Draw Down Tube. As this is estimated we move 80% up the head tube.
     var pathDownTube = new Path.Line(b.bottom_bracket, (pathHeadTube.getPointAt(pathHeadTube.length * 0.8)));
-    pathDownTube.strokeColor = colours.component;
-    b.bike_group.addChild(pathDownTube);
+    bike_parts_estimated.addChild(pathDownTube);
 
     // Draw Seat Stay
     var pathSeatStay = new Path.Line(b.rear_wheel, b.seat_tube_top);
-    pathSeatStay.strokeColor = colours.component;
-    b.bike_group.addChild(pathSeatStay);
+    bike_parts_estimated.addChild(pathSeatStay);
 
     // Draw rear wheel
     var shapeRearWheel = new Shape.Circle(b.rear_wheel, b.wheel_size);
-    shapeRearWheel.strokeColor = colours.component;
-    b.bike_group.addChild(shapeRearWheel);
+    bike_parts.addChild(shapeRearWheel);
 
     // Draw front wheel
     var shapeFrontWheel = new Shape.Circle(b.front_wheel, b.wheel_size);
-    shapeFrontWheel.strokeColor = colours.component;
-    b.bike_group.addChild(shapeFrontWheel);
+    bike_parts.addChild(shapeFrontWheel);
+
+    // Apply styling and interactivity to each bike part that we know the value of
+    bike_parts.children.forEach(function (part) {
+        part.set({
+            strokeCap: 'round',
+            strokeWidth: 7,
+            strokeColor: colours.component,
+            onMouseEnter: function () {
+                this.strokeColor = colours.hovered;
+            },
+            onMouseLeave: function () {
+                this.strokeColor = colours.component;
+            }
+        });
+    });
+
+    // Apply styling and interactivity to each bike part that we know the value of
+    bike_parts_estimated.children.forEach(function (part) {
+        part.set({
+            strokeCap: 'round',
+            strokeWidth: 2,
+            dashArray: [7, 7],
+            strokeColor: colours.component
+        });
+    });
+
+    b.bike_group.addChild(bike_parts);
+    b.bike_group.addChild(bike_parts_estimated);
 }
 
 function main() {

@@ -14,6 +14,7 @@ var bicycle = {
 
 var colours = {
     gridline: '#f9f1e0',
-    guideline: '#be639c',
+    guideline: '#646464',
+    hovered: '#0093be',
     component: '#00BE5B'
 };
