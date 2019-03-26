@@ -1,5 +1,5 @@
 var colours = {
-    gridline: '#a0d3ff',
+    gridline: '#f9f1e0',
     guideline: '#be639c',
     component: '#00BE5B'
 };
@@ -21,13 +21,19 @@ var bicycle = {
 var allBikes = new Group();
 
 function drawGridLines() {
-    // Draw vertical centre line on the view
-    var pathVerticalCentreLine = new Path.Line(view.bounds.topCenter, view.bounds.bottomCenter);
-    pathVerticalCentreLine.strokeColor = colours.gridline;
+    for (var i = 0.1; i < 1; i += 0.1) {
+        // Draw vertical line
+        var pathVerticalGridLine = new Path.Line(
+            new Point(view.bounds.width * i, 0), new Point(view.bounds.width * i, view.bounds.height)
+        );
+        pathVerticalGridLine.strokeColor = colours.gridline;
 
-    // Draw horizontal centre line on the view
-    var pathHorizontalCentreLine = new Path.Line(view.bounds.leftCenter, view.bounds.rightCenter);
-    pathHorizontalCentreLine.strokeColor = colours.gridline;
+        // Draw horizontal line
+        var pathHorizontalGridLine = new Path.Line(
+            new Point(0, view.bounds.height * i), new Point(view.bounds.width, view.bounds.height * i)
+        );
+        pathHorizontalGridLine.strokeColor = colours.gridline;
+    }
 }
 
 function makeBike(b) {
