@@ -39,6 +39,12 @@ var bicycle3 = {
     wheel_size: 311
 };
 
+var test_bicycle = {};
+var toggle_bikes = {};
+
+var loaded = false;
+var state = "";
+
 var colours = {
     gridline: '#909090',
     guideline: '#646464',
@@ -48,4 +54,61 @@ var colours = {
     wheels: '#555432'
 };
 
-window.globals = {};
+var multiple = {
+    gridline: '#f9f1e0',
+    guideline: '#646464',
+    hovered: '#0093be',
+    component: ['aqua', 'red','lime', 'fuschia', 'yellow', 'maroon', 'teal','blue', 'green']
+};
+
+window.globals = {}
+
+function readBikeData(file) {
+    var xmlhttp = new XMLHttpRequest();
+    var url = "dataTest.json";
+
+    xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        var myArr = JSON.parse(this.responseText);
+        var notSort = [];
+        for (k in myArr){
+            notSort.push(myArr[k])
+        }        
+        
+        test_bicycle = notSort.sort(function(a, b) {
+            return a.stack - b.stack;
+        });
+
+        var buttons = document.getElementById("togButtons")
+        for (let bikeNum = 0; bikeNum < test_bicycle.length; bikeNum++) {
+            toggle_bikes[bikeNum] = true;
+            var newBtn = document.createElement("button")
+            newBtn.id = "togBike".concat(bikeNum);
+            newBtn.onclick = function () { 
+                window.globals.toggleBike(bikeNum);
+                if(!this.classList.contains("active"))
+                    this.classList.add("active")
+                else
+                    this.classList.remove("active")
+                console.log(this.classList);
+                
+                
+            } 
+            newBtn.innerHTML = ""+(bikeNum+1);
+            newBtn.classList.add("btn") 
+            newBtn.classList.add(multiple.component[bikeNum])
+            test_bicycle[bikeNum].colour = multiple.component[bikeNum]
+            
+            buttons.appendChild(
+                newBtn
+            )
+        }
+
+        loaded = true;
+        }
+    };
+
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+    
+}
