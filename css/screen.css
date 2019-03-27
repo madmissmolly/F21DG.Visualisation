@@ -14,67 +14,54 @@ button {
     color: white;
     border-radius: 20px;
     border: 1;
+    font-size: 1vw;
     border-style: solid;
     padding: 10px;
 }
 
 .btn {
-    margin-left: 5
+    margin-left: 5;
 }
 
 .toggle {
     background-color: white;
     border-color: black;
-    color: black
+    color: black;
 }
 .toggle.active{
     background-color: black;
-    color: white
-}
-
-
-.red {
-    background-color: red;
-    border-color: red;
-    color: white
-}
-
-.red.active{
-    background-color: white;
-    color: red
-}
-
-.aqua {
-    background-color: aqua;
-    border-color: aqua;
     color: white;
 }
 
-.aqua.active{
-    background-color: white;
-    color: aqua
+.btn.isActive.active{
+    background-color: #00BE5B;
+    color: white;
 }
 
-.lime {
-    background-color: lime;
-    border-color: lime;
-    color: white
+.btn.isActive{
+    background-color: white;
+    color: #00BE5B;
 }
 
-.lime.active{
+.btn.isInactive.active{
+    background-color: grey;
+    color: white;
+}
+
+.btn.isInactive{
     background-color: white;
-    color: lime
+    color: grey;
 }
 
 .fuschia {
     background-color: fuchsia;
     border-color: fuchsia;
-    color: white
+    color: white;
 }
 
 .fuschia.active{
     background-color: white;
-    color: fuchsia
+    color: fuchsia;
 }
 
 

@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="css/screen.css">
     <script type="text/javascript" src="./node_modules/paper/dist/paper-full.js" async></script>
     <script type="text/javascript" src="js/config.js" async></script>
+    <script type="text/javascript" src="js/multi-bike.js"></script>
     <script type="text/javascript" src="js/data-check.js" async></script>
     <script type="text/paperscript" src="js/bicycle-vis.js" canvas="canvas" async></script>
 </head>
@@ -16,7 +17,7 @@
             <canvas id="canvas" height="450px" width="800px" resize="true"></canvas>
         </div>
         <div class="controls-container" id="togButtons" >
-            <button onclick="window.globals.toggle()" class="toggle" id="toggle_test">Toggle Testing</button>
+            <button onclick="toggleTesting()" class="toggle" id="toggle_test">Toggle Testing</button>
         </div>
     </div>
 </main>

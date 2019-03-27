@@ -335,6 +335,38 @@ function makeBike(b) {
     }
 }
 
+function drawBikes() {
+    project.activeLayer.removeChildren()
+    drawGridLines();
+
+    allBikes = new Group();
+    for (bike in all_bicycle_data){
+        if(toggle_bikes[bike]){
+            makeBike(all_bicycle_data[bike]);
+        }
+    }
+    if(isTesting){
+        var perRow = Math.round(allBikes.children.length / 2);
+        var separator = 2000;
+        var loc = new Point(0,0);
+        
+        for (bikeKey in allBikes.children){
+            bike = allBikes.children[bikeKey];
+
+            bike.position = loc;
+            loc.x = (loc.x + separator) % (perRow * separator);
+            if (loc.x == 0 ){
+                loc.y = loc.y + separator;
+            }
+        }
+    }
+    
+    // Resize the bikes to fit within the view
+    allBikes.fitBounds(view.bounds);
+    allBikes.scale(0.8);
+    allBikes.bringToFront();
+}
+
 window.globals.main = function (bikes_array) {
     project.clear();
 
@@ -344,6 +376,7 @@ window.globals.main = function (bikes_array) {
     hoverLabel = new PointText(hoverLabelSettings);
 
     drawGridLines();
+    readBikeData();
 
     bikes_array.forEach(function (b) {
         console.log(b);
