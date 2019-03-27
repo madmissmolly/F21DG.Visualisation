@@ -108,6 +108,13 @@ function drawGuidelines(b) {
 
     // Draw stack guideline
     var pathStack = new Path.Line(b.bottom_bracket, b.bottom_bracket - new Point(0, b.stack));
+    var textStack = new PointText({
+        point: pathStack.bounds.center + new Point(25, 0),
+        content: b.stack,
+        fontSize: 25,
+        justification: 'left'
+    });
+    bike_guidelines.addChild(textStack);
     bike_guidelines.addChild(pathStack);
 
     // Draw reach guideline
@@ -147,17 +154,6 @@ function drawGuidelines(b) {
     });
     bike_guidelines.addChild(textHeadTubeLabel);
     bike_guidelines.addChild(pathHeadTubeGuideline);
-
-    // Draw head tube guideline to the right of the head tube
-    var pathForkGuideline = new Path.Line(b.head_tube_bottom, b.front_wheel);
-    pathForkGuideline.translate(new Point(50, 0));
-    var textForkLabel = new PointText({
-        point: pathForkGuideline.bounds.center + new Point(25, 0),
-        content: Math.ceil(pathForkGuideline.length),
-        fontSize: 25
-    });
-    bike_guidelines.addChild(textForkLabel);
-    bike_guidelines.addChild(pathForkGuideline);
 
     bike_guidelines.children.forEach(function (part) {
         part.set({
@@ -367,4 +363,4 @@ var hoverLabelSettings = {
     justification: 'center'
 };
 
-window.globals.main([bicycle3]);
+window.globals.main([bicycle1]);
