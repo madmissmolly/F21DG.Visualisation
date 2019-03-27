@@ -50,5 +50,18 @@
         "seat_tube_length": 540,
         "seat_angle": 74,
         "wheel_size": 311
+    },
+    "5": {
+        "wheelbase": 1121.6,
+        "bb_drop": 43,
+        "chainstay": 438,
+        "stack": 593.1,
+        "reach": 402.7,
+        "fork_length": 410,
+        "head_angle": 67.2,
+        "head_tube": 95,
+        "seat_tube_length": 410,
+        "seat_angle": 73.8,
+        "wheel_size": 311
     }
 }
