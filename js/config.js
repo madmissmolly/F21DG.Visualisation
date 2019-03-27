@@ -43,8 +43,10 @@ var bicycle3 = {
 };
 
 var colours = {
-    gridline: '#f9f1e0',
+    gridline: '#909090',
     guideline: '#646464',
-    hovered: '#0093be',
-    component: '#00BE5B'
+    hovered: '#bea705',
+    component: '#0093be',
+    estimated: '#888888',
+    wheels: '#555432'
 };
