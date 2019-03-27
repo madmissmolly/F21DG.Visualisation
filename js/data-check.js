@@ -1,6 +1,6 @@
 //Function that determines whether we can draw a bike or not
 function isDrawable(b) {
-    //Checks if nessecary parameters are present, calculates them if not, returns false if this is not possible
+    //Checks if necessary parameters are present, calculates them if not, returns false if this is not possible
     if (b.chainstay == null) {
         //Chainstay cannot be calculated from other parameters
         console.log("No chainstay");
@@ -43,7 +43,7 @@ function isDrawable(b) {
             b.stack = b.seat_tube_length_eff * Math.sin(b.seat_angle);
         } else if (b.standover == null || b.bb_height == null) {
             //stack can be calculated from other parameters
-            b.stack = b.bb_drop + (Math.sin(b.head_angle * (180 / Math.PI)) * b.head_tube) + (b.fork_length * Math.sin(b.head_angle * (180 / Math.PI)));
+            b.stack = b.bb_drop + (Math.sin(b.head_angle  * Math.PI / 180) * b.head_tube) + (b.fork_length * Math.sin(b.head_angle  * Math.PI / 180));
         } else {
             //stack can be calculated from other parameters
             b.stack = b.standover - b.bb_height + b.bb_drop;
@@ -70,7 +70,6 @@ function isDrawable(b) {
     if (b.fork_rake == null) {
         console.log("No fork_rake, assumption is that there is no change in angle");
         b.fork_rake = 0;
-        //return false;
     }
 
     if (b.seat_tube_length == null) {

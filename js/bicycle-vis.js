@@ -20,7 +20,7 @@ function findBottomBracket(b) {
 
 //Find bottom of steering axis by using fork rake to find distance from front wheel along wheelbase
 function findSteeringAxisBottom(b) {
-    return new Point(b.front_wheel - new Point(b.fork_rake / Math.sin(b.head_angle), 0));
+    return new Point(b.front_wheel - new Point(b.fork_rake / Math.sin(b.head_angle * Math.PI / 180), 0));
 }
 
 function findSteeringAxisTop(b) {
@@ -32,7 +32,11 @@ function findSteeringAxisTop(b) {
     var steering_axis_top_offset = b.steering_axis_bottom - new Point(Math.sqrt(Math.pow(steering_axis_length, 2) - Math.pow((b.stack - b.bb_drop), 2)), 0);
 
     // Find coordinate for top of steering axis / head tube
-    return steering_axis_top_offset - new Point(0, (b.stack - b.bb_drop));
+    steering_axis_top_offset -= new Point(0, (b.stack - b.bb_drop));
+
+    steering_axis_top_offset.x = b.bottom_bracket.x + b.reach;
+
+    return steering_axis_top_offset;
 }
 
 function findHeadTubeBottom(b) {
@@ -107,7 +111,15 @@ function drawGuidelines(b) {
     bike_guidelines.addChild(pathStack);
 
     // Draw reach guideline
-    var pathReach = new Path.Line(pathStack.position + new Point(0, -100), pathStack.position + new Point(b.reach, -100));
+    var pathReach = new Path.Line(pathStack.position, new Point(b.steering_axis_top.x, pathStack.position.y));
+    pathReach.translate(new Point(0, -100));
+    var textReach = new PointText({
+        point: pathReach.bounds.center + new Point(0, -25),
+        content: Math.ceil(pathReach.length),
+        fontSize: 25,
+        justification: 'center'
+    });
+    bike_guidelines.addChild(textReach);
     bike_guidelines.addChild(pathReach);
 
     // Draw steering axis
@@ -141,7 +153,7 @@ function drawGuidelines(b) {
     pathForkGuideline.translate(new Point(50, 0));
     var textForkLabel = new PointText({
         point: pathForkGuideline.bounds.center + new Point(25, 0),
-        content: b.fork_length,
+        content: Math.ceil(pathForkGuideline.length),
         fontSize: 25
     });
     bike_guidelines.addChild(textForkLabel);
@@ -318,35 +330,41 @@ function makeBike(b) {
         b.bike_group.pivot = b.bottom_bracket;
         b.bike_group.position = view.center;
 
+        // Add the drawn bike's group of parts to collection of bikes
         return b.bike_group;
     }
 }
 
-function main() {
+window.globals.main = function (bikes_array) {
+    project.clear();
+
     // All groups of bike parts are collected in here
     var allBikes = new Group();
 
+    hoverLabel = new PointText(hoverLabelSettings);
+
     drawGridLines();
 
-    // Create, draw, and return bike as a group of parts
-    var bikeGroup = makeBike(bicycle1);
-
-    // Add the drawn bike's group of parts to collection of bikes
-    allBikes.addChild(bikeGroup);
+    bikes_array.forEach(function (b) {
+        console.log(b);
+        // Create, draw, and add bike parts to all bikes group
+        allBikes.addChild(makeBike(b));
+    });
 
     // Resize the bikes to fit within the view
     allBikes.fitBounds(view.bounds);
     allBikes.scale(0.8);
     allBikes.bringToFront();
-}
+};
 
-var hoverLabel = new PointText({
+var hoverLabel;
+
+var hoverLabelSettings = {
     point: view.bounds.bottomCenter - new Point(0, 10),
     fillColor: 'black',
     fontFamily: 'Helvetica',
-    fontWeight: 'bold',
     fontSize: 14,
     justification: 'center'
-});
+};
 
-main();
+window.globals.main([bicycle3]);
