@@ -108,6 +108,13 @@ function drawGuidelines(b) {
 
     // Draw stack guideline
     var pathStack = new Path.Line(b.bottom_bracket, b.bottom_bracket - new Point(0, b.stack));
+    var textStack = new PointText({
+        point: pathStack.bounds.center + new Point(25, 0),
+        content: b.stack,
+        fontSize: 25,
+        justification: 'left'
+    });
+    bike_guidelines.addChild(textStack);
     bike_guidelines.addChild(pathStack);
 
     // Draw reach guideline
@@ -400,4 +407,4 @@ var hoverLabelSettings = {
     justification: 'center'
 };
 window.globals.drawBikes = drawBikes;
-window.globals.main([bicycle3]);
+window.globals.main([bicycle2]);
