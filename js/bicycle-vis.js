@@ -151,7 +151,7 @@ function drawGuidelines(b) {
         part.set({
             strokeCap: 'round',
             strokeWidth: 2,
-            dashArray: [2, 8],
+            dashArray: [2, 4],
             opacity: 0.6,
             strokeColor: colours.guideline
         });
