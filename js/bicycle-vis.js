@@ -236,7 +236,7 @@ function drawBike(b) {
 
     // Draw bottom bracket
     var shapeBottomBracket = new Shape.Circle(b.bottom_bracket, 25);
-    shapeBottomBracket.fillColor = colours.component;
+    shapeBottomBracket.fillColor = b.colour;
     shapeBottomBracket.label = "Bottom bracket";
     bike_parts.addChild(shapeBottomBracket);
 
@@ -245,7 +245,7 @@ function drawBike(b) {
         part.set({
             strokeCap: 'round',
             strokeWidth: 10,
-            strokeColor: colours.component,
+            strokeColor: b.colour,
             selected: true,
             opacity: 0.6,
             onMouseEnter: function () {
@@ -255,7 +255,7 @@ function drawBike(b) {
             },
             onMouseLeave: function () {
                 hoverLabel.content = "";
-                this.strokeColor = colours.component;
+                this.strokeColor = b.colour;
                 this.bringToFront();
             }
         });
@@ -331,12 +331,12 @@ function makeBike(b) {
         b.bike_group.position = view.center;
 
         // Add the drawn bike's group of parts to collection of bikes
-        return b.bike_group;
+        allBikes.addChild(b.bike_group);
     }
 }
 
 function drawBikes() {
-    project.activeLayer.removeChildren()
+    project.clear();
     drawGridLines();
 
     allBikes = new Group();
@@ -374,15 +374,15 @@ window.globals.main = function (bikes_array) {
     var allBikes = new Group();
 
     hoverLabel = new PointText(hoverLabelSettings);
-
+    
     drawGridLines();
     readBikeData();
 
-    bikes_array.forEach(function (b) {
-        console.log(b);
-        // Create, draw, and add bike parts to all bikes group
-        allBikes.addChild(makeBike(b));
-    });
+    // bikes_array.forEach(function (b) {
+    //     console.log(b);
+    //     // Create, draw, and add bike parts to all bikes group
+    //     allBikes.addChild(makeBike(b));
+    // });
 
     // Resize the bikes to fit within the view
     allBikes.fitBounds(view.bounds);
@@ -399,5 +399,5 @@ var hoverLabelSettings = {
     fontSize: 14,
     justification: 'center'
 };
-
+window.globals.drawBikes = drawBikes;
 window.globals.main([bicycle3]);

@@ -57,3 +57,4 @@ var colours = {
 var maxVisible = 2;
 
 window.globals = {}
+var allBikes;
