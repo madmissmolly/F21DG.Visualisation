@@ -82,14 +82,14 @@ function drawGridLines() {
             new Point(view.bounds.width * i, 0), new Point(view.bounds.width * i, view.bounds.height)
         );
         pathVerticalGridLine.opacity = 0.1;
-        pathVerticalGridLine.strokeColor = colours.gridline;
+        pathVerticalGridLine.strokeColor = window.globals.colours.gridline;
 
         // Draw horizontal line
         var pathHorizontalGridLine = new Path.Line(
             new Point(0, view.bounds.height * i), new Point(view.bounds.width, view.bounds.height * i)
         );
         pathHorizontalGridLine.opacity = 0.1;
-        pathHorizontalGridLine.strokeColor = colours.gridline;
+        pathHorizontalGridLine.strokeColor = window.globals.colours.gridline;
     }
 }
 
@@ -161,7 +161,7 @@ function drawGuidelines(b) {
             strokeWidth: 2,
             dashArray: [2, 4],
             opacity: 0.6,
-            strokeColor: colours.guideline
+            strokeColor: window.globals.colours.guideline
         });
     });
 
@@ -232,7 +232,7 @@ function drawBike(b) {
 
     // Draw bottom bracket
     var shapeBottomBracket = new Shape.Circle(b.bottom_bracket, 25);
-    shapeBottomBracket.fillColor = colours.component;
+    shapeBottomBracket.fillColor = window.globals.colours.component;
     shapeBottomBracket.label = "Bottom bracket";
     bike_parts.addChild(shapeBottomBracket);
 
@@ -241,17 +241,17 @@ function drawBike(b) {
         part.set({
             strokeCap: 'round',
             strokeWidth: 10,
-            strokeColor: colours.component,
+            strokeColor: window.globals.colours.component,
             selected: true,
             opacity: 0.6,
             onMouseEnter: function () {
                 hoverLabel.content = this.label;
-                this.strokeColor = colours.hovered;
+                this.strokeColor = window.globals.colours.hovered;
                 this.bringToFront();
             },
             onMouseLeave: function () {
                 hoverLabel.content = "";
-                this.strokeColor = colours.component;
+                this.strokeColor = window.globals.colours.component;
                 this.bringToFront();
             }
         });
@@ -261,16 +261,16 @@ function drawBike(b) {
         part.set({
             strokeCap: 'round',
             strokeWidth: 12,
-            strokeColor: colours.wheels,
+            strokeColor: window.globals.colours.wheels,
             opacity: 0.3,
             onMouseEnter: function () {
                 hoverLabel.content = 'Wheel radius';
-                this.strokeColor = colours.hovered;
+                this.strokeColor = window.globals.colours.hovered;
                 this.bringToFront();
             },
             onMouseLeave: function () {
                 hoverLabel.content = "";
-                this.strokeColor = colours.wheels;
+                this.strokeColor = window.globals.colours.wheels;
                 this.bringToFront();
             }
         });
@@ -281,7 +281,7 @@ function drawBike(b) {
             strokeCap: 'round',
             strokeWidth: 8,
             opacity: 0.3,
-            strokeColor: colours.estimated
+            strokeColor: window.globals.colours.estimated
         });
     });
 
@@ -363,4 +363,4 @@ var hoverLabelSettings = {
     justification: 'center'
 };
 
-window.globals.main([bicycle1]);
+window.globals.main([window.globals.example_bikes.bicycle_1]);
