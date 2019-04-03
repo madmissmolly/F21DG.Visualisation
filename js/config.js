@@ -1,12 +1,60 @@
 // Create globals to share variables between Paper.js and the JavaScript
-window.globals = {
-    colours: {
-        gridline: '#909090',
+window.bike_colours= {
+    gridline: '#f6f6f6',
         guideline: '#646464',
         hovered: '#bea705',
         component: '#0093be',
+        component_inactive: 'grey',
         estimated: '#888888',
-        wheels: '#555432'
+        wheels: '#545455'
+};
+
+window.globals = {
+    colours: window.bike_colours,
+
+    testing: true,
+
+    bike_part_settings: {
+        strokeCap: 'round',
+        strokeWidth: 10,
+        strokeColor: window.bike_colours.component,
+        selected: true,
+        opacity: 0.6
+    },
+
+    bike_wheel_settings: {
+        strokeCap: 'round',
+        strokeWidth: 12,
+        strokeColor: window.bike_colours.wheels,
+        opacity: 0.3
+    },
+
+    bike_part_estimated_settings: {
+        strokeCap: 'round',
+        strokeWidth: 8,
+        opacity: 0.3,
+        strokeColor: window.bike_colours.estimated
+    },
+
+    hover_label_settings: {
+        fillColor: 'black',
+        fontFamily: 'Helvetica',
+        fontSize: 14,
+        justification: 'center'
+    },
+
+    bike_guideline_settings: {
+        strokeCap: 'round',
+        strokeWidth: 2,
+        dashArray: [2, 4],
+        opacity: 0.6,
+        strokeColor: window.bike_colours.guideline
+    },
+
+    bike_guideline_label_settings: {
+        fillColor: window.bike_colours.guideline,
+        fontFamily: 'Helvetica',
+        fontSize: 25
     },
 
     example_bikes: {

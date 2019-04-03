@@ -3,20 +3,20 @@ function isDrawable(b) {
     //Checks if necessary parameters are present, calculates them if not, returns false if this is not possible
     if (b.chainstay == null) {
         //Chainstay cannot be calculated from other parameters
-        console.log("No chainstay");
+        logBikeMessage("No chainstay");
         return false;
     }
 
     if (b.bb_drop == null) {
-        //bb_drop cannot be calulated from other parameters
-        console.log("No bb_drop");
+        //bb_drop cannot be calculated\ from other parameters
+        logBikeMessage("No bb_drop");
         return false;
     }
 
     if (b.wheelbase == null) {
         if (b.front_centre == null) {
             //front_centre cannot be calculated from other parameters
-            console.log("No front_centre");
+            logBikeMessage("No front_centre");
             return false;
         } else {
             //wheelbase can be calculated from other parameters
@@ -25,25 +25,25 @@ function isDrawable(b) {
     }
 
     if (b.head_angle == null && b.stack == null) {
-        console.log("No stack or head_angle");
+        logBikeMessage("No stack or head_angle");
         return false;
     }
 
     if (b.seat_angle == null) {
-        console.log("No seat_angle");
+        logBikeMessage("No seat_angle");
         return false;
     }
 
     if (b.stack == null) {
         if ((b.head_tube == null || b.head_angle == null || b.fork_length == null) && (b.standover == null || b.bb_height == null)) {
             // stack cannot be calculated from other parameters
-            console.log("No stack");
+            logBikeMessage("No stack");
             return false;
         } else if (b.seat_tube_length_eff != null) {
             b.stack = b.seat_tube_length_eff * Math.sin(b.seat_angle);
         } else if (b.standover == null || b.bb_height == null) {
             //stack can be calculated from other parameters
-            b.stack = b.bb_drop + (Math.sin(b.head_angle  * Math.PI / 180) * b.head_tube) + (b.fork_length * Math.sin(b.head_angle  * Math.PI / 180));
+            b.stack = b.bb_drop + (Math.sin(b.head_angle * Math.PI / 180) * b.head_tube) + (b.fork_length * Math.sin(b.head_angle * Math.PI / 180));
         } else {
             //stack can be calculated from other parameters
             b.stack = b.standover - b.bb_height + b.bb_drop;
@@ -52,7 +52,7 @@ function isDrawable(b) {
 
     if (b.head_angle == null) {
         if (b.head_tube == null || b.fork_length == null) {
-            console.log("No head_angle");
+            logBikeMessage("No head_angle");
             return false
         }
         b.head_angle = (b.stack) / Math.asin(b.head_tube + b.fork_length);
@@ -60,7 +60,7 @@ function isDrawable(b) {
 
     if (b.head_tube == null) {
         if (b.fork_length == null) {
-            console.log("No head_tube or forklength");
+            logBikeMessage("No head_tube or fork_length");
             return false;
         } else {
             b.head_tube = (b.stack / Math.sin(b.head_angle)) - b.fork_length;
@@ -68,18 +68,24 @@ function isDrawable(b) {
     }
 
     if (b.fork_rake == null) {
-        console.log("No fork_rake, assumption is that there is no change in angle");
+        logBikeMessage("No fork_rake, assumption is that there is no change in angle");
         b.fork_rake = 0;
     }
 
     if (b.seat_tube_length == null) {
-        if (b.seat_tube_length_cc != null) { b.seat_tube_length = b.seat_tube_length_cc }
-        else if (b.seat_tube_length_eff != null) { b.seat_tube_length = b.seat_tube_length_eff }
-        else {
-            console.log("No seat tube of any kind");
+        if (b.seat_tube_length_cc != null) {
+            b.seat_tube_length = b.seat_tube_length_cc
+        } else if (b.seat_tube_length_eff != null) {
+            b.seat_tube_length = b.seat_tube_length_eff
+        } else {
+            logBikeMessage("No seat tube of any kind");
             return false;
         }
         return false;
     }
     return true;
+}
+
+function logBikeMessage(message) {
+    console.info(("Bike check: " + message));
 }

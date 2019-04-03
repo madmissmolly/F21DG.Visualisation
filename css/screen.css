@@ -4,6 +4,18 @@
     max-width: 100%;
 }
 
+#interface input{
+    display: block;
+    margin: 0.7rem 0;
+    width: 100%;
+}
+
+#interface input:after{
+    content: attr(data-label);
+    display: block;
+    padding-left: 1.5rem;
+}
+
 canvas {
     display: block;
     border: 1px solid lightgray;
