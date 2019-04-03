@@ -27,10 +27,19 @@ What can you do?
 Code In Action
 ------
 ### Screenshots
-Below is a screenshot of a single bike being visualised on the left with a photograph of the same bike being displayed n the right:
-Visualised Bike: ![Alt](/picturesForReadme/bikeFromSlide.png) 
-Below is a screenshot of 
-> placeholder for screenshots
+Below is a screenshot of a single bike being visualised with a photograph of the same bike being displayed:
+
+<img float="left" width="70%" src="/picturesForReadme/bikeFromSlide.png" alt="Visualised Bike"/><img width="50%" src="/picturesForReadme/realBike.png" alt="Photographed Bike"/>
+
+This bike is the Giant TCR Advanced Pro Disc 2019 XS.
+
+Below is a screenshot of two bikes being overlaid on top of one another:
+
+<img float="left" width="80%" src="/picturesForReadme/multipleBikes.png" alt="Multiple Bikes"/>
+
+When testing is toggled many bikes can be viewed in a grid:
+
+<img float="left" width="80%" src="/picturesForReadme/testingBikes.png" alt="Testing Bikes On"/>
 
 ### Bike Objects
 An example of how a bike JSON object is structured:
@@ -85,7 +94,8 @@ This is where the main function, 'window.globals.main = function (bikes_array)' 
 
 #### Order of Calculation
 The below diagram shows the values that this project requires to draw a bike (red) and any other values that are calculated from these (white). Where lines on the diagram cross, dotted lines have been used to make the incivudal lines clearer.
-> Placeholder for diagram
+
+<img float="left" width="80%" src="/picturesForReadme/DrawingBikes.png" alt="Diagram of how parameters are used"/>
 
 #### Things to keep in mind when using 'bicycle-vis.js'
 - Bike calculations and drawing is always done in the same order. You could extend this project so that alternate routes from value to calculation are available for a more robust system.
@@ -106,7 +116,9 @@ This file stores global variables. This is to ease the passing of variables from
 
 ## 'data-check.js'
 #### Checks that the data given is enough to draw a bike
-This file contains a large method that is a series of if statements. This is used as a flag to determine whether or not the script should draw a particular bike. This project assumes that fairly clean and complete data is being provided and this data check should be the last line of defense rather than the main method of data validation. It checks if the required values (red boxes in the diagram above) are present and if not attempts to calculate them if not. Again this happens in a certain order and could be extended to allow multiple paths. The 'data-check.js' method is called in 'makeBike(b)' in the main code as a boolean check before continuing onto the calculations and drawing functions for that bike.
+This file contains a large method that is a series of if statements. This is used as a flag to determine whether or not the script should draw a particular bike. This project assumes that fairly clean and complete data is being provided and this data check should be the last line of defense rather than the main method of data validation. It checks if the required values (red boxes in the diagram above) are present and if not attempts to calculate them if not. Again this happens in a certain order and could be extended to allow multiple paths. The 'data-check.js' method is called in 'makeBike(b)' in the main code as a boolean check before continuing onto the calculations and drawing functions for that bike. In the next diagram a few alternate dependencies are shown.
+
+<img float="left" width="80%" src="/picturesForReadme/DrawingBikes2.png" alt="Alternate Calculations"/>
 
 ## 'interface.js'
 #### Example interfaces
