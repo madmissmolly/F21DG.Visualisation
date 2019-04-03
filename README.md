@@ -2,11 +2,15 @@
 
 **Quick Start Instructions**
 
-Run `npm install` to get the dependencies.
+Include the Paper.js main file from CDN or by using `npm install`.
 
-Host locally use `/index.html`.
+Include the files from the `/js` directory (`/js/interface.js` is optional for showing a basic interface demo).
 
-The main file for visualisation is `bicycle-vis.js`.
+Include `/js/bicycle-vis.js` last as `<script type="text/paperscript" src="js/bicycle-vis.js" canvas="canvas" async></script>`.
+
+Add `<canvas id="canvas" height="675px" width="1600px" resize="true"></canvas>` to the page.
+
+Call `window.globals.main()` to visualise bike(s). The first argument is required and should be an array of bike objects. The second argument is optional and when set to true will set to testing mode.
 
 Project Overview
 ======
