@@ -29,17 +29,17 @@ Code In Action
 ### Screenshots
 Below is a screenshot of a single bike being visualised with a photograph of the same bike being displayed:
 
-<img float="left" width="70%" src="/picturesForReadme/bikeFromSlide.png" alt="Visualised Bike"/><img width="50%" src="/picturesForReadme/realBike.png" alt="Photographed Bike"/>
+<img float="left" width="70%" src="/images/bikeFromSlide.png" alt="Visualised Bike"/><img width="50%" src="/images/realBike.png" alt="Photographed Bike"/>
 
 This bike is the Giant TCR Advanced Pro Disc 2019 XS.
 
 Below is a screenshot of two bikes being overlaid on top of one another:
 
-<img float="left" width="80%" src="/picturesForReadme/multipleBikes.png" alt="Multiple Bikes"/>
+<img float="left" width="80%" src="/images/multipleBikes.png" alt="Multiple Bikes"/>
 
 When testing is toggled many bikes can be viewed in a grid:
 
-<img float="left" width="80%" src="/picturesForReadme/testingBikes.png" alt="Testing Bikes On"/>
+<img float="left" width="80%" src="/images/testingBikes.png" alt="Testing Bikes On"/>
 
 ### Bike Objects
 An example of how a bike JSON object is structured:
@@ -85,7 +85,7 @@ Index page that includes that '<canvas>' element that the scripts draw onto.
 
 #### Finding Functions
 These functions calculate all the Points needed to draw a bike.
-These calculations are all basic trigonomerty or geometry and have been based off of the descipriptions and diagram that can be found [here]{https://geometrygeeks.bike/understanding-bike-geometry}.
+These calculations are all basic trigonometry or geometry and have been based off of the descriptions and diagram that can be found [here]{https://geometrygeeks.bike/understanding-bike-geometry}.
 #### Drawing Functions
 These functions use Path.Line and Path.(shape) to draw the elements of the bike into an HTML5 Canvas. These [Path]{https://paperjs.org/reference/path/} functions (along with [Point]{http://paperjs.org/reference/point/} objects that are provided to these functions) are from [Paper.js]{https://paperjs.org/}.
 #### Core Functions
@@ -93,22 +93,22 @@ These functions create the overall structure and hierarchy that calls all of the
 This is where the main function, 'window.globals.main = function (bikes_array)' is. When you call main you must provide it with a 'bike_array' which is an array of bike data objects like the one shown above.
 
 #### Order of Calculation
-The below diagram shows the values that this project requires to draw a bike (red) and any other values that are calculated from these (white). Where lines on the diagram cross, dotted lines have been used to make the incivudal lines clearer.
+The below diagram shows the values that this project requires to draw a bike (red) and any other values that are calculated from these (white). Where lines on the diagram cross, dotted lines have been used to make the individual lines clearer.
 
-<img float="left" width="80%" src="/picturesForReadme/DrawingBikes.png" alt="Diagram of how parameters are used"/>
+<img float="left" width="80%" src="/images/DrawingBikes.png" alt="Diagram of how parameters are used"/>
 
 #### Things to keep in mind when using 'bicycle-vis.js'
 - Bike calculations and drawing is always done in the same order. You could extend this project so that alternate routes from value to calculation are available for a more robust system.
 - If the canvas is not cleared then new objects will be drawn on top of old ones
 - [Groups]{https://paperjs.org/reference/group/} are used in Paperscript are somewhere between a tree and an array, they can be iterated over and can have subsets. You can add to them using an 'addChildren' method. In this code Groups are used to collect both the values that are generated and the sets of lines drawn for each bike.
 - When testing is toggled on bikes will display in a grid rather than on top of each other
-- You can visualise a maximum of two bikes overlaid on eachother
+- You can visualise a maximum of two bikes overlaid on each other
 - The front most bike will be blue and the second will be grey
 - Only one bike will have guidelines (stack, reach, wheelbase, bbdrop, head tube and fork shown as dashed lines) to keep the image from being cluttered
-- Guidelines are labled and their values are displayed in millimeters
+- Guidelines are labeled and their values are displayed in millimeters
 - If there are not enough values to draw a bike it will not appear and a message will be logged to the console (visible by pressing F12 in most browsers)
 - When you see 'b' as a parameter or as an object it is referencing a single set of bike JSON data
-- When you see 'i' as a parameter it is the index of indivual bike 'b' in the set of all bikes
+- When you see 'i' as a parameter it is the index of individual bike 'b' in the set of all bikes
 
 ## 'config.js'
 #### Global vars
@@ -118,12 +118,12 @@ This file stores global variables. This is to ease the passing of variables from
 #### Checks that the data given is enough to draw a bike
 This file contains a large method that is a series of if statements. This is used as a flag to determine whether or not the script should draw a particular bike. This project assumes that fairly clean and complete data is being provided and this data check should be the last line of defense rather than the main method of data validation. It checks if the required values (red boxes in the diagram above) are present and if not attempts to calculate them if not. Again this happens in a certain order and could be extended to allow multiple paths. The 'data-check.js' method is called in 'makeBike(b)' in the main code as a boolean check before continuing onto the calculations and drawing functions for that bike. In the next diagram a few alternate dependencies are shown.
 
-<img float="left" width="80%" src="/picturesForReadme/DrawingBikes2.png" alt="Alternate Calculations"/>
+<img float="left" width="80%" src="/images/DrawingBikes2.png" alt="Alternate Calculations"/>
 
 ## 'interface.js'
 #### Example interfaces
-This file is included as an example and reference of how you would interact with the script files when integrating this project into your own webpage. It currently creates all of the check box inputs that toggle bikes and testing.
+This file is included as an example and reference of how you would interact with the script files when integrating this project into your own web page. It currently creates all of the check box inputs that toggle bikes and testing.
 
 #### Other Files
 ------
-Other files include basic CSS, package files that state the projects dependecy on Paper.js as well as the standard GitHub Project files (LICENSE, README.md, .gitignore).
+Other files include basic CSS, package files that state the projects dependency on Paper.js as well as the standard GitHub Project files (LICENSE, README.md, .gitignore).
