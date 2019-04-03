@@ -10,50 +10,91 @@ function findFrontWheel(b) {
     return new Point(view.center + new Point(b.wheelbase / 2, 0));
 }
 
-// Use Pythagoras' Theorem to find the bottom bracket
+// Use Pythagoras' Theorem to find the bottom bracket 
+// the square root of (chainstay^2 + bb_drop^2) gives the x offset from the rear wheel
+// bb_drop gives us the y offset from the rear wheel
 function findBottomBracket(b) {
-    return b.rear_wheel + new Point(Math.sqrt(Math.pow(b.chainstay, 2) + Math.pow(b.bb_drop, 2)), b.bb_drop);
+    var point = new Point(b.rear_wheel);
+    point += new Point(Math.sqrt(Math.pow(b.chainstay, 2) + Math.pow(b.bb_drop, 2)), 0);
+    point += new Point(0, b.bb_drop);
+    return point;
 }
 
-//Find bottom of steering axis by using fork rake to find distance from front wheel along wheelbase
+// Find bottom of steering axis by using fork rake to find distance from front wheel along wheelbase
+// fork_rake / sin head_angle gives us the x offset from the front wheel
+// there is no y offset from the front wheel
+// the angle in degrees is converted to radians
 function findSteeringAxisBottom(b) {
     return new Point(b.front_wheel - new Point(b.fork_rake / Math.sin(b.head_angle * Math.PI / 180), 0));
 }
 
-// Find top of steering axis by using the reach and stack with existing coordinates
+
 function findSteeringAxisTop(b) {
-    return new Point(b.bottom_bracket.x + b.reach, b.steering_axis_bottom.y - (b.stack - b.bb_drop));
+    // Calculate length of steering axis
+    var steering_axis_length = (b.stack - b.bb_drop) / Math.sin(b.head_angle * Math.PI / 180);
+
+    // Use Pythagoras' Theorem to find X offset of top of steering axis from front wheel
+    // var steering_axis_top_offset = new Point(b.front_wheel - new Point(b.fork_rake + Math.sqrt(Math.pow(steering_axis_length, 2) - Math.pow((b.stack - b.bb_drop), 2)), 0));
+    var steering_axis_top_offset = b.steering_axis_bottom - new Point(Math.sqrt(Math.pow(steering_axis_length, 2) - Math.pow((b.stack - b.bb_drop), 2)), 0);
+
+    // Find coordinate for top of steering axis / head tube
+    steering_axis_top_offset -= new Point(0, (b.stack - b.bb_drop));
+
+    steering_axis_top_offset.x = b.bottom_bracket.x + b.reach;
+
+    return steering_axis_top_offset;
 }
 
+// Find coordinate for bottom of head tube 
 function findHeadTubeBottom(b) {
-    // Find coordinate for bottom of head tube y offset from top of head tube sin * hyp
+    // y offset from top of head tube 
+	// sin head_angle * head_tube
+	// head_angle is converted from degrees into radians
     var y_offset = Math.sin(b.head_angle * Math.PI / 180) * b.head_tube;
-
+    
+    // x offset from top of head tube
+	// square root of (head_tube^2 - y_offset^2)
     var x_offset = Math.sqrt(Math.pow(b.head_tube, 2) - Math.pow(y_offset, 2));
 
     return b.steering_axis_top + new Point(x_offset, y_offset);
 }
 
+// Find coordinates for top of seat tube
 function findSeatTubeTop(b) {
-    // Find coordinates for top of seat tube offset from bottom bracket sin * hyp
+    // y offset from bottom bracket sin seat_angle * seat_tube_length
+    // seat_angle is converted from degrees into radians
     var y_offset = Math.sin(b.seat_angle * Math.PI / 180) * b.seat_tube_length;
 
+	// x offset from bottom bracket 
+	// square root of (seat_tube_length^2 - y_offset^2)
     var x_offset = Math.sqrt(Math.pow(b.seat_tube_length, 2) - Math.pow(y_offset, 2));
 
     return b.bottom_bracket - new Point(x_offset, y_offset);
 }
 
+// Find coordinates for top of seat post
 function findSeatPostTop(b) {
+    // y offset from top of seat tube
+	// sin seat_angle * 140 (this is currently a fixed length seat post)
+	// seat_angle is converted from degrees into radians	
     var y_offset = Math.sin(b.seat_angle * Math.PI / 180) * 140;
-
+    
+    // x offset from top of seat tube 
+	// square root of (140^2 - y_offset^2)
     var x_offset = Math.sqrt(Math.pow(140, 2) - Math.pow(y_offset, 2));
 
     return b.seat_tube_top - new Point(x_offset, y_offset);
 }
 
+// Find coordinates for top of handlebar post
 function findHandlebarPostTop(b) {
+    // y offset from top of steering axis
+	// sin head_angle * 100 (this is currently a fixed length handlebar post)
+	// seat_angle is converted from degrees into radians
     var y_offset = Math.sin(b.head_angle * Math.PI / 180) * 100;
 
+    // x offset from top of steering axis 
+	// square root of (100^2 - y_offset^2)
     var x_offset = Math.sqrt(Math.pow(100, 2) - Math.pow(y_offset, 2));
 
     return b.steering_axis_top - new Point(x_offset, y_offset);
