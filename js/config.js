@@ -14,6 +14,8 @@ window.globals = {
 
     testing: true,
 
+    active_bikes: [],
+
     bike_part_settings: {
         strokeCap: 'round',
         strokeWidth: 10,
