@@ -27,8 +27,8 @@ What can you do?
 Code In Action
 ------
 ### Screenshots
-Below is a screenshot of a single bike being visualised on the left with a photograph of the same bike being dosplayed n the right:
-> Placeholder for Screenshots
+Below is a screenshot of a single bike being visualised on the left with a photograph of the same bike being displayed n the right:
+Visualised Bike: ![Alt](/picturesForReadme/bikeFromSlide.png) 
 Below is a screenshot of 
 > placeholder for screenshots
 
