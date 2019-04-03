@@ -13,7 +13,7 @@ function createInterface(bike_array) {
 
         checkbox_show_bike.type = 'checkbox';
         checkbox_show_bike.checked = true;
-        checkbox_show_bike.setAttribute("data-label", ("Bike " + i));
+        checkbox_show_bike.setAttribute("data-label", ("Bike " + (i + 1)));
         checkbox_show_bike.bike = bike_array[i];
 
         checkbox_show_bike.onchange = function () {
@@ -35,9 +35,11 @@ function createInterface(bike_array) {
 
     interface_wrap.appendChild(checkbox_toggle_testing);
     interface_wrap.appendChild(checkbox_show_bike_group);
+
+    window.globals.main(activeBikes(checkbox_show_bike_group));
 }
 
-function activeBikes(group){
+function activeBikes(group) {
     var active_bikes = [];
 
     for (var i = 0; i < group.children.length; i++) {
